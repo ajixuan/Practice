@@ -1,6 +1,40 @@
 class Solution {
+
+/*
+*   Optimized window sliding solution
+**/
 public:
-    int lengthOfLongestSubstring(string s) {
+    int optimized(string s) {
+        
+        std::map <char, int> map;
+        int i = 0; int j = 0; int ans = 0;
+        
+        if(s.size() == 1){
+            return 1;
+        }
+        
+        //if not same, append to result
+        while(i < s.size() && j < s.size()){
+
+            //C++ method of finding if an element exists
+            if(map.find(s[j]) != map.end()){
+                i = max(map[s[j]], i);
+            }
+
+            ans = max(ans, j - i + 1);            
+            map[s[j]] = j + 1;
+            j++;
+        }
+
+        return ans;
+    }
+
+
+/*
+*   Naive solution
+**/
+public:
+    int naive(string s) {
         
         std::map <char, int> map;
         string result = "";
