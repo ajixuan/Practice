@@ -10,5 +10,5 @@ public:
 	BST() { this->tree = std::vector<int>((int)std::pow(2, 10), NULL); }
 	void trickle(int node, int root);
 	void insert(int);
-	void print_tree();
+	void print_tree(int level);
 };
