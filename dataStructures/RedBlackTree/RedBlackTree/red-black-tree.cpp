@@ -23,27 +23,31 @@ void RBT::rebalance(int index, int bp) {
 	else if (this->bh < bp) {
 	
 	}
-}
+}*/
 
 
 
-void RBT::trickle(Node* node, int root, int bp) {
-	//Count the number of black nodes as we trickle down
-	if (this->tree[root]->color == black) bp++;
-
-	//If we have reached leaf check for rotations
-	if (this->tree[root] == nullptr) {
-		this->tree[root] = &node;
-		this->rebalance(root, bp);
+void RBT::trickle(Node* curr, Node* insert) {
+	if (insert->val <= curr->val) {
+		if (curr->left) {
+			this->trickle(curr->left, insert);
+		}
+		else {
+			curr->left = insert;
+			return;
+		}
+	}
+	else {
+		if (curr->right) {
+			this->trickle(curr->right, insert);
+		}
+		else {
+			curr->right = insert;
+			return;
+		}
 	}
 
-	if (node.val <= this->tree[root]->val) {
-		return this->trickle(node, root * 2 + 1, bp);
-	}
-	else if (node.val > this->tree[root]->val) {
-		return this->trickle(node, root * 2 + 2, bp);
-	}
-};*/
+};
 
 void RBT::insert(Node* node){
 	if (this->tree == nullptr) {
@@ -53,7 +57,7 @@ void RBT::insert(Node* node){
 		return;
 	}
 
-	//this->trickle(node, 0, 1);
+	this->trickle(this->tree, node);
 };
 
 /*
@@ -63,20 +67,20 @@ void RBT::insert(Node* node){
 */
 void RBT::printTree(Node* curr, queue<Node*>& discover) {
 	printf("|%d,%d| ", curr->val, curr->color);
-
-	if (discover.empty()) {
-		return;
-	}	
 	
 	if (curr->left) {
 		discover.push(curr->left);
-	} 
+	}
 	
 	if (curr->right) {
 		discover.push(curr->right);
 	}
 
-	Node* next = discover.back();
+	if (discover.empty()) {
+		return;
+	}
+
+	Node* next = discover.front();
 	discover.pop();
 
 	this->printTree(next, discover);
@@ -86,5 +90,8 @@ int main(){
 	Node* root = new Node(7);
 	RBT& tr = RBT();
 	tr.insert(root);
+	tr.insert(new Node(2));
+	tr.insert(new Node(20));
+	tr.insert(new Node(1));
 	tr.printTree(root, queue<Node *>());
 };
