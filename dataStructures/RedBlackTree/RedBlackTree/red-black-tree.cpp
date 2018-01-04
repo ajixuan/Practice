@@ -1,58 +1,90 @@
-#include <vector>
-#include <iostream>
 #include "red-black-tree.h"
 using namespace std;
-/**
- * Property
- *      1. Each node is red or black 1= red, 0 = black
- *      2. Root is black
- *      3. Nils are black
- *      4. If node is red, children are black
- *      5. black-height = the number of black nodes on all nodes to a nil leaf
- *         is the same
- *      6. Every path from root to leaf null has same number of blacks
- * Path from the root to the farthest nil is no more than twice as long as to 
- * the shortest leaf
- * 
- * Notes:
- *  - Red and black trees are faster at insertion and deletion
- *  - AVL trees are faster at search because they are more balanced
- */
 
-Node::Node(int val) {
-	this->val = val;
+/*
+* If uncle is red do recoloring
+* If uncle is black do rotation
+*
+void RBT::rebalance(int index, int bp) {
+	//If parent red
+	if (this->tree->color == red) {
+		//If uncle red
+		if (this->tree[parent + 1]->color == red) {
+			//Recolor upper level and check depth
+			for (int i = getH(parent) - 1; i < getH(index) - 2; i++) {
+				this->tree[i]->color = black;
+			}
+		}
+
+		this->tree[parent]->color = black;
+
+	} 
+	//If depth is violated
+	else if (this->bh < bp) {
+	
+	}
 }
 
 
-void RedBlackTree::insert(Node& node){
-        if(this->tree.empty()){
-			node.color = red;
-			tree.push_back(node);
-            return;
-        }
 
-		node.color = red;
+void RBT::trickle(Node* node, int root, int bp) {
+	//Count the number of black nodes as we trickle down
+	if (this->tree[root]->color == black) bp++;
 
+	//If we have reached leaf check for rotations
+	if (this->tree[root] == nullptr) {
+		this->tree[root] = &node;
+		this->rebalance(root, bp);
+	}
 
-		//Recolor first
-		
-		
-		//Rotate
+	if (node.val <= this->tree[root]->val) {
+		return this->trickle(node, root * 2 + 1, bp);
+	}
+	else if (node.val > this->tree[root]->val) {
+		return this->trickle(node, root * 2 + 2, bp);
+	}
+};*/
 
+void RBT::insert(Node* node){
+	if (this->tree == nullptr) {
+		node->color = black;
+		this->tree = node;
+		this->bh = 2;
+		return;
+	}
 
-
-
-		//Standard bst
-        //root.length / 2;
+	//this->trickle(node, 0, 1);
 };
 
+/*
+* Print using BFS
+* Keep a queue of nodes. When new node 
+* discovered, push node onto queue.
+*/
+void RBT::printTree(Node* curr, queue<Node*>& discover) {
+	printf("|%d,%d| ", curr->val, curr->color);
+
+	if (discover.empty()) {
+		return;
+	}	
+	
+	if (curr->left) {
+		discover.push(curr->left);
+	} 
+	
+	if (curr->right) {
+		discover.push(curr->right);
+	}
+
+	Node* next = discover.back();
+	discover.pop();
+
+	this->printTree(next, discover);
+}
 
 int main(){
-	Node& root = Node(7);
-	RedBlackTree& tr = RedBlackTree();
+	Node* root = new Node(7);
+	RBT& tr = RBT();
 	tr.insert(root);
-	cout << tr.tree[0].val << tr.tree[0].color;
-
-
-
+	tr.printTree(root, queue<Node *>());
 };
