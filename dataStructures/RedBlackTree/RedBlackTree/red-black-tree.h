@@ -28,11 +28,13 @@ public:
 		this->color = red;
 		this->left = nullptr;
 		this->right = nullptr;
+		this->parent = nullptr;
 	};
 	int val;
 	Color color;
 	Node* left;
 	Node* right;
+	Node* parent;
 };
 
 class RBT {
@@ -41,7 +43,7 @@ class RBT {
 	int size = 0;
 	int h = 0;
 public:
-	//void rebalance(int, int);
+	void rebalance(Node*);
 	void trickle(Node*, Node*);
 	void insert(Node*);
 	void printTree(Node * curr, std::queue<Node*>& discover);

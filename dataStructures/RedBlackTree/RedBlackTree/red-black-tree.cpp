@@ -1,29 +1,67 @@
 #include "red-black-tree.h"
 using namespace std;
 
+Node* getUncle(Node* curr) {
+	if (curr->parent->parent->left == curr) {
+		printf("right uncle");
+		return curr->parent->parent->right;
+	}
+	else {
+		printf("left uncle");
+		return curr->parent->parent->left;
+	}
+}
+
 /*
+* Red and black trees are all about the uncles
 * If uncle is red do recoloring
 * If uncle is black do rotation
-*
-void RBT::rebalance(int index, int bp) {
+*/
+void RBT::rebalance(Node* insert) {
 	//If parent red
-	if (this->tree->color == red) {
+	Node* parent = insert->parent;
+	Node* uncle = getUncle(parent);
+	if (parent->color == red) {
 		//If uncle red
-		if (this->tree[parent + 1]->color == red) {
-			//Recolor upper level and check depth
-			for (int i = getH(parent) - 1; i < getH(index) - 2; i++) {
-				this->tree[i]->color = black;
+		//Recolor upper 2 levels and check depth
+		if (getUncle(insert)->color == red) {
+			uncle->color = black;
+			parent->color = black;
+			parent->parent->color = black;
+		}
+		//If uncle black
+		else {
+			//Parent Left 
+			if (parent->parent->left == parent) {
+				//Child left
+				if (parent->left == insert) {
+
+
+				}
+				//Child right
+				else if (parent->right == insert) {
+
+
+				}
+			} 
+			//Parent right
+			else if(parent->parent->right == parent){
+				//Child left
+				if (parent->left == insert) {
+
+
+				}
+				//Child right
+				else if (parent->right == insert) {
+
+
+				}
 			}
 		}
 
-		this->tree[parent]->color = black;
 
 	} 
-	//If depth is violated
-	else if (this->bh < bp) {
-	
-	}
-}*/
+}
 
 
 
@@ -33,7 +71,9 @@ void RBT::trickle(Node* curr, Node* insert) {
 			this->trickle(curr->left, insert);
 		}
 		else {
+			insert->parent = curr;
 			curr->left = insert;
+			this->rebalance(insert);
 			return;
 		}
 	}
@@ -42,7 +82,9 @@ void RBT::trickle(Node* curr, Node* insert) {
 			this->trickle(curr->right, insert);
 		}
 		else {
+			insert->parent = curr;
 			curr->right = insert;
+			this->rebalance(insert);
 			return;
 		}
 	}
