@@ -44,7 +44,7 @@ class RBT {
 	int h = 0;
 public:
 	void rebalance(Node*);
-	void trickle(Node*, Node*);
+	void trickle(Node*, Node*, int);
 	void insert(Node*);
 	void printTree(Node * curr, std::queue<Node*>& discover);
 	//~RBT();
