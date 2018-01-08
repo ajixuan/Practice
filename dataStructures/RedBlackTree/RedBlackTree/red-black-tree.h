@@ -46,6 +46,6 @@ public:
 	void rebalance(Node*);
 	void trickle(Node*, Node*, int);
 	void insert(Node*);
-	void printTree(Node * curr, std::queue<Node*>& discover);
+	void printTree(Node * curr, std::queue<Node*>& discover, int);
 	//~RBT();
 };
