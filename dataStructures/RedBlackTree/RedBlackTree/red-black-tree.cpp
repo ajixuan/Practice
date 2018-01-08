@@ -69,8 +69,28 @@ void RBT::rebalance(Node* insert) {
 				}
 				//Child right
 				else if (parent->right == insert) {
+					//Rotate into the left left format first
+					//Rotate child and parent
+					insert->left = parent;
+					insert->parent = parent->parent;
+					parent->right = nullptr;
 
+					//Severing ties
+					parent->parent = insert;
+					parent = insert;
 
+					//Perform the standard left-left rotation
+					Node* rootbranch = parent->parent->parent;
+					parent->parent->parent = parent->parent->left;
+					parent->parent->left = parent->right;
+					parent->right = parent->parent;
+
+					//Severing link
+					parent->parent = rootbranch;
+
+					//Recolor
+					parent->color = black;
+					parent->right->color = red;
 				}
 			} 
 			//Parent right
@@ -152,7 +172,7 @@ void RBT::printTree(Node* curr, queue<Node*>& discover) {
 		return;
 	}
 
-
+	
 
 	Node* next = discover.front();
 	discover.pop();
@@ -163,8 +183,8 @@ int main(){
 	Node* root = new Node(7);
 	RBT& tr = RBT();
 	tr.insert(root);
-	//tr.insert(new Node(2));
-	//tr.insert(new Node(20));
+	tr.insert(new Node(2));
+	tr.insert(new Node(20));
 	tr.insert(new Node(1));
 	tr.printTree(root, queue<Node *>());
 };
