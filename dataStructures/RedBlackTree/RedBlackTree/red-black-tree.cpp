@@ -157,11 +157,14 @@ void RBT::insert(Node* node){
 * Keep a queue of nodes. When new node 
 * discovered, push node onto queue.
 */
-void RBT::printTree(Node* curr, queue<Node*>& discover, int count) {
+void RBT::printTree(queue<Node*>& discover, int count, Node* curr) {
+	if (curr == nullptr) {
+		curr = this->tree;
+	}
+
 	//If there is only one on bit in the number then it is beginning
 	//Right shift until first bit is on. 
 	//If number is not 1
-	
 	auto checkNewLine = [=]() {
 		int tmp = count;
 		while (tmp != 0) {
@@ -193,15 +196,14 @@ void RBT::printTree(Node* curr, queue<Node*>& discover, int count) {
 	
 	Node* next = discover.front();
 	discover.pop();
-	this->printTree(next, discover, count+1);
+	this->printTree(discover, count+1, next);
 };
 
 int main(){
-	Node* root = new Node(7);
 	RBT& tr = RBT();
-	tr.insert(root);
+	tr.insert(new Node(7));
 	tr.insert(new Node(2));
 	tr.insert(new Node(20));
 	tr.insert(new Node(1));
-	tr.printTree(root, queue<Node *>(), 1);
+	tr.printTree(queue<Node *>(), 1);
 };
