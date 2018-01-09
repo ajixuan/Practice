@@ -6,13 +6,17 @@ using namespace std;
 * Assuming we only insert above 2 levels
 */
 Node* getUncle(Node* curr) {
-	if (curr->parent->parent->left == curr) {
-		printf("right uncle");
+	if (curr->parent->parent->left == curr->parent) {
+		printf("right uncle\n");
 		return curr->parent->parent->right;
 	}
-	else {
-		printf("left uncle");
+	else if (curr->parent->parent->left == curr->parent){
+		printf("left uncle\n");
 		return curr->parent->parent->left;
+	}
+	else {
+		printf("Error, the node cannot be found\n");
+		exit(1);
 	}
 };
 
@@ -30,11 +34,12 @@ void RBT::rebalance(Node* insert) {
 
 	//If parent red
 	Node* parent = insert->parent;
-	Node* uncle = getUncle(parent);
+	Node* uncle = getUncle(insert);
 	if (parent->color == red) {
 		//If uncle red
 		//Recolor upper 2 levels and check depth
-		if (getUncle(insert)->color == red) {
+		if (uncle->color == red) {
+			printf("red\n");
 			uncle->color = black;
 			parent->color = black;
 			parent->parent->color = red;
@@ -43,6 +48,7 @@ void RBT::rebalance(Node* insert) {
 		else {
 			//Parent Left 
 			if (parent->parent->left == parent) {
+				printf("left left");
 				//Child left:
 				//Rotate sub tree starting from grand parent right
 				//Dealing with rights:
@@ -69,6 +75,7 @@ void RBT::rebalance(Node* insert) {
 				}
 				//Child right
 				else if (parent->right == insert) {
+					printf("left right");
 					//Rotate into the left left format first
 					//Rotate child and parent
 					insert->left = parent;
@@ -120,8 +127,9 @@ void RBT::trickle(Node* curr, Node* insert, int h) {
 		else {
 			insert->parent = curr;
 			curr->left = insert;
-			this->h = h;
+			this->h = h+1;
 			this->rebalance(insert);
+			printf("%d\n", h+1);
 			return;
 		}
 	}
@@ -134,8 +142,9 @@ void RBT::trickle(Node* curr, Node* insert, int h) {
 		else {
 			insert->parent = curr;
 			curr->right = insert;
-			this->h = h;
+			this->h = h+1;
 			this->rebalance(insert);
+			printf("%d\n", h+1);
 			return;
 		}
 	}
@@ -201,9 +210,12 @@ void RBT::printTree(queue<Node*>& discover, int count, Node* curr) {
 
 int main(){
 	RBT& tr = RBT();
+	tr.insert(new Node(10));
+	tr.insert(new Node(5));
+	tr.insert(new Node(20));
 	tr.insert(new Node(7));
 	tr.insert(new Node(2));
-	tr.insert(new Node(20));
+	tr.insert(new Node(3));
 	tr.insert(new Node(1));
 	tr.printTree(queue<Node *>(), 1);
 };
