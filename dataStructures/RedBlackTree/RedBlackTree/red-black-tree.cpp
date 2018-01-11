@@ -26,15 +26,21 @@ Node* getUncle(Node* curr) {
 * If uncle is black do rotation
 */
 void RBT::rebalance(Node* insert) {
-	//Only rebalance if there are more than 2 levels
-	//Other wise it is not necessary
+	//Not necessary to rebalance if there are less than 2 levels
 	if (this->h < 2) {
 		return;
 	}
 
-	//If parent red
 	Node* parent = insert->parent;
 	Node* uncle = getUncle(insert);
+
+	//If nullptr uncle, create a black placeholder node on the stack
+	if (uncle == nullptr) {
+		uncle = &Node(0);
+		uncle->color = black;
+	}
+
+	//Rebalance
 	if (parent->color == red) {
 		//If uncle red
 		//Recolor upper 2 levels and check depth
@@ -46,9 +52,9 @@ void RBT::rebalance(Node* insert) {
 		}
 		//If uncle black
 		else {
+			Node* rootbranch = nullptr;
 			//Parent Left 
 			if (parent->parent->left == parent) {
-				printf("left left");
 				//Child left:
 				//Rotate sub tree starting from grand parent right
 				//Dealing with rights:
@@ -56,12 +62,13 @@ void RBT::rebalance(Node* insert) {
 				//left becomes the parent. So any sibling of current insert
 				//goes onto the left of the previous root
 				if (parent->left == insert) {
+					printf("left left");
 					//Relocate right
 					//You should always manipulate the top level nodes first
 					//Because you do not have direct access to them. If you sever
 					//your relative links before you complete all changes to the 
 					//indirect nodes then you lose reference to them
-					Node* rootbranch = parent->parent->parent;
+					rootbranch = parent->parent->parent;
 					parent->parent->parent = parent->parent->left;
 					parent->parent->left = parent->right;
 					parent->right = parent->parent;
@@ -87,7 +94,7 @@ void RBT::rebalance(Node* insert) {
 					parent = insert;
 
 					//Perform the standard left-left rotation
-					Node* rootbranch = parent->parent->parent;
+					rootbranch = parent->parent->parent;
 					parent->parent->parent = parent->parent->left;
 					parent->parent->left = parent->right;
 					parent->right = parent->parent;
@@ -99,7 +106,7 @@ void RBT::rebalance(Node* insert) {
 					parent->color = black;
 					parent->right->color = red;
 				}
-			} 
+			}
 			//Parent right
 			else if(parent->parent->right == parent){
 				//Child left
@@ -113,6 +120,12 @@ void RBT::rebalance(Node* insert) {
 
 				}
 			}
+			
+			//If root has changed, then we need to update root
+			if (rootbranch == nullptr) {
+				this->tree = parent;
+			}
+
 		}
 	} 
 };
@@ -212,10 +225,10 @@ int main(){
 	RBT& tr = RBT();
 	tr.insert(new Node(10));
 	tr.insert(new Node(5));
-	tr.insert(new Node(20));
-	tr.insert(new Node(7));
-	tr.insert(new Node(2));
-	tr.insert(new Node(3));
-	tr.insert(new Node(1));
+	//tr.insert(new Node(20));
+	//tr.insert(new Node(7));
+	tr.insert(new Node(6));
+	//tr.insert(new Node(3));
+	//tr.insert(new Node(1));
 	tr.printTree(queue<Node *>(), 1);
 };
