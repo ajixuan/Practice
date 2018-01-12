@@ -10,7 +10,7 @@ Node* getUncle(Node* curr) {
 		printf("right uncle\n");
 		return curr->parent->parent->right;
 	}
-	else if (curr->parent->parent->left == curr->parent){
+	else if (curr->parent->parent->right == curr->parent){
 		printf("left uncle\n");
 		return curr->parent->parent->left;
 	}
@@ -53,7 +53,6 @@ void RBT::rebalance(Node* insert) {
 		//If uncle black
 		else {
 			Node* rootbranch = nullptr;
-			//Parent Left 
 			if (parent->parent->left == parent) {
 				//Child left:
 				//Rotate sub tree starting from grand parent right
@@ -79,9 +78,7 @@ void RBT::rebalance(Node* insert) {
 					//Recolor
 					parent->color = black;
 					parent->right->color = red;
-				}
-				//Child right
-				else if (parent->right == insert) {
+				} else if (parent->right == insert) {
 					printf("left right");
 					//Rotate into the left left format first
 					//Rotate child and parent
@@ -106,19 +103,49 @@ void RBT::rebalance(Node* insert) {
 					parent->color = black;
 					parent->right->color = red;
 				}
-			}
-			//Parent right
-			else if(parent->parent->right == parent){
+			} else if(parent->parent->right == parent){
+				if (parent->right == insert) {
+					printf("right right");
+					rootbranch = parent->parent->parent;
+					parent->parent->parent = parent->parent->right;
+					parent->parent->right = parent->left;
+					parent->left = parent->parent;
+
+					//Severing link
+					parent->parent = rootbranch;
+
+					//Recolor
+					parent->color = black;
+					parent->left->color = red;
+				}
 				//Child left
-				if (parent->left == insert) {
+				else if (parent->left == insert) {
+					printf("right left");
+					//Rotate into the right right format first
+					//Rotate child and parent
+					insert->right = parent;
+					insert->parent = parent->parent;
+					parent->left = nullptr;
 
+					//Severing ties
+					parent->parent = insert;
+					parent = insert;
 
+					rootbranch = parent->parent->parent;
+					parent->parent->parent = parent->parent->right;
+					parent->parent->right = parent->left;
+					parent->left = parent->parent;
+
+					//Severing link
+					parent->parent = rootbranch;
+
+					//Recolor
+					parent->color = black;
+					parent->left->color = red;
 				}
-				//Child right
-				else if (parent->right == insert) {
-
-
-				}
+			}
+			else {
+				printf("huh");
 			}
 			
 			//If root has changed, then we need to update root
@@ -131,7 +158,6 @@ void RBT::rebalance(Node* insert) {
 };
 
 void RBT::trickle(Node* curr, Node* insert, int h) {
-	//Less
 	if (insert->val <= curr->val) {
 		if (curr->left) {
 			this->trickle(curr->left, insert, h+1);
@@ -140,13 +166,8 @@ void RBT::trickle(Node* curr, Node* insert, int h) {
 		else {
 			insert->parent = curr;
 			curr->left = insert;
-			this->h = h+1;
-			this->rebalance(insert);
-			printf("%d\n", h+1);
-			return;
 		}
 	}
-	//Greater
 	else {
 		if (curr->right) {
 			this->trickle(curr->right, insert, h+1);
@@ -155,12 +176,14 @@ void RBT::trickle(Node* curr, Node* insert, int h) {
 		else {
 			insert->parent = curr;
 			curr->right = insert;
-			this->h = h+1;
-			this->rebalance(insert);
-			printf("%d\n", h+1);
-			return;
 		}
 	}
+
+	this->h = h + 1;
+	this->rebalance(insert);
+	printf("%d\n", h + 1);
+	return;
+
 };
 
 void RBT::insert(Node* node){
@@ -224,11 +247,11 @@ void RBT::printTree(queue<Node*>& discover, int count, Node* curr) {
 int main(){
 	RBT& tr = RBT();
 	tr.insert(new Node(10));
-	tr.insert(new Node(5));
+	tr.insert(new Node(15));
 	//tr.insert(new Node(20));
 	//tr.insert(new Node(7));
-	tr.insert(new Node(6));
+	tr.insert(new Node(13));
+	tr.printTree(queue<Node *>(), 1);
 	//tr.insert(new Node(3));
 	//tr.insert(new Node(1));
-	tr.printTree(queue<Node *>(), 1);
 };
