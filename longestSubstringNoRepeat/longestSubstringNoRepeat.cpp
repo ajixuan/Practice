@@ -8,7 +8,7 @@ public:
         
 		//Map = (current char : longest length of substring)
         std::map <char, int> map
-        int repeatLongest = 0; int cur = 0; int ans = 0;
+        int repeat = 0; int cur = 0; int ans = 0;
         
         if(s.size() == 1){
             return 1;
@@ -19,13 +19,13 @@ public:
 
             //C++ method of finding if an element exists
             if(map.find(s[cur]) != map.end()){
-				//
-                repeatLongest= max(map[s[cur]], i);
+				//Whichever is longest, 
+                repeat= max(map[s[cur]], repat);
             }
 
-			//cur - repeatLongest because 
+			//cur - repeat because 
 			// + 1 because you are computing one extra char
-			ans = max(ans, cur - repeatLongest + 1); 
+			ans = max(ans, cur - repeat + 1); 
 
 			//Store longest of cur char in map
             map[s[cur]] = cur + 1;
