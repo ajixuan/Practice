@@ -6,24 +6,30 @@ class Solution {
 public:
     int optimized(string s) {
         
-        std::map <char, int> map;
-        int i = 0; int j = 0; int ans = 0;
+		//Map = (current char : longest length of substring)
+        std::map <char, int> map
+        int repeatLongest = 0; int cur = 0; int ans = 0;
         
         if(s.size() == 1){
             return 1;
         }
         
         //if not same, append to result
-        while(i < s.size() && j < s.size()){
+        while(repeatLongest < s.size() && cur < s.size()){
 
             //C++ method of finding if an element exists
-            if(map.find(s[j]) != map.end()){
-                i = max(map[s[j]], i);
+            if(map.find(s[cur]) != map.end()){
+				//
+                repeatLongest= max(map[s[cur]], i);
             }
 
-            ans = max(ans, j - i + 1);            
-            map[s[j]] = j + 1;
-            j++;
+			//cur - repeatLongest because 
+			// + 1 because you are computing one extra char
+			ans = max(ans, cur - repeatLongest + 1); 
+
+			//Store longest of cur char in map
+            map[s[cur]] = cur + 1;
+            cur++;
         }
 
         return ans;
