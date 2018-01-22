@@ -1,37 +1,41 @@
-class Solution {
+class Solution
 
 /*
 *   Optimized window sliding solution
 **/
 public:
-    int optimized(string s) {
-        
-		//Map = (current char : longest length of substring)
-        std::map <char, int> map
-        int repeat = 0; int cur = 0; int ans = 0;
+    static int optimized(string s) {
+		//Map = (curr char: longest length of its substring)
+		std::map <char, int> map;
+
+		//Head and tail of the sliding window
+		//head = cursor, advancing down the string
+		//tail = the position behind head where the last 
+		//repeat of the head char is located
+		int tail = 0; int head = 0; int ans = 0;
         
         if(s.size() == 1){
             return 1;
         }
         
-        //if not same, append to result
-        while(repeatLongest < s.size() && cur < s.size()){
-
-            //C++ method of finding if an element exists
-            if(map.find(s[cur]) != map.end()){
-				//Whichever is longest, 
-                repeat= max(map[s[cur]], repat);
+        while(tail < s.size() && head< s.size()){
+			//If this char already exist in map
+			if(map.find(s[head]) != map.end()){
+				//Tail is updated to the closest next repeat char
+				tail=max(map[s[head]], tail);
             }
 
-			//cur - repeat because 
-			// + 1 because you are computing one extra char
-			ans = max(ans, cur - repeat + 1); 
+			//head - tail because we calculate from tail to head
+			//+ 1 because its number of chars not index
+			ans = max(ans, head - tail + 1); 
 
 			//Store longest of cur char in map
-            map[s[cur]] = cur + 1;
-            cur++;
+			//+1 to exclude curr char because it is duplicate
+            map[s[cur]] = head + 1;
+            head++;
         }
 
+		cout << ans;
         return ans;
     }
 
@@ -40,7 +44,7 @@ public:
 *   Naive solution
 **/
 public:
-    int naive(string s) {
+    static int naive(string s) {
         
         std::map <char, int> map;
         string result = "";
@@ -72,3 +76,8 @@ public:
         return result.length();
     }
 };
+
+
+int main() {
+	Solution::optimized("aabotegkmdthaeodunt");
+}
