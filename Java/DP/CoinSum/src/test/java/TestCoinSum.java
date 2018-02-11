@@ -8,8 +8,11 @@ public class TestCoinSum {
     public void testOne(){
         CoinSum sum = new CoinSum(new int[]{1,3,5}, 11);
         Assert.assertEquals(3, sum.getCoinSum());
+        sum.setSum(12);
+        Assert.assertEquals(4, sum.getCoinSum());
+        sum.setSum(13);
         Assert.assertEquals(3, sum.getCoinSum());
-        Assert.assertEquals(3, sum.getCoinSum());
+        sum.setSum(15);
         Assert.assertEquals(3, sum.getCoinSum());
 
 

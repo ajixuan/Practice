@@ -23,6 +23,16 @@ public class CoinSum {
        this.solutions = new int[sum+1];
     }
 
+
+    public void setCoins(int[] coins){
+        this.coins = coins;
+    }
+
+    public void setSum(int sum){
+        this.sum = sum;
+        this.solutions = new int[sum+1];
+    }
+
     public int getCoinSum(){
         //Main loop
         for(int n = 0; n <= sum; n++){
