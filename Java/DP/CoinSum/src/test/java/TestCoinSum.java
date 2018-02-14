@@ -20,16 +20,6 @@ public class TestCoinSum {
         Assert.assertEquals(3, sum.coinChange(new int[]{1,3,5}, 15));
     }
 
-
-    @Test
-    public void testMinCoin(){
-        CoinSum sum = new CoinSum();
-        Assert.assertEquals(1, sum.findMinCoins(new int[]{1,3,5}, 1));
-        Assert.assertEquals(2, sum.findMinCoins(new int[]{1,3,5}, 2));
-        Assert.assertEquals(2, sum.findMinCoins(new int[]{1,3,5}, 6));
-        Assert.assertEquals(3, sum.findMinCoins(new int[]{1,3,5}, 9));
-    }
-
     @Test
     public void testEdges() {
         Assert.assertEquals(-1, sum.coinChange(new int[]{2}, 1));
