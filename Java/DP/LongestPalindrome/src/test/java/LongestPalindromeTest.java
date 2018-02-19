@@ -24,7 +24,7 @@ public class LongestPalindromeTest {
 
     @Test
     public void testOnePalindrome(){
-        Assert.assertEquals("aba", optimal.longestPalindrome("abab"));
+        Assert.assertEquals("bab", optimal.longestPalindrome("abab"));
         Assert.assertEquals("babab", optimal.longestPalindrome("babab"));
         Assert.assertEquals("bab", optimal.longestPalindrome("aoeuoentababotenhuonetu"));
         Assert.assertEquals("b", optimal.longestPalindrome("b"));
@@ -42,17 +42,17 @@ public class LongestPalindromeTest {
     @Test
     public void testMultipleSameChar(){
         Assert.assertEquals("adada", optimal.longestPalindrome("babadada"));
-        Assert.assertEquals("adada", optimal.longestPalindrome("xxaxxabababa"));
+        Assert.assertEquals("abababa", optimal.longestPalindrome("xxaxxabababa"));
 
     }
 
     @Test
     public void testIsPalindrome(){
-        Assert.assertTrue(optimal.isPalindrome("aba"));
-        Assert.assertTrue(optimal.isPalindrome("a"));
-        Assert.assertTrue(optimal.isPalindrome("bb"));
-        Assert.assertTrue(optimal.isPalindrome("bbbb"));
-        Assert.assertFalse(optimal.isPalindrome("aabbcc"));
+        Assert.assertTrue(naive.isPalindrome("aba"));
+        Assert.assertTrue(naive.isPalindrome("a"));
+        Assert.assertTrue(naive.isPalindrome("bb"));
+        Assert.assertTrue(naive.isPalindrome("bbbb"));
+        Assert.assertFalse(naive.isPalindrome("aabbcc"));
     }
 }
 
