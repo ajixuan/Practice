@@ -26,9 +26,11 @@ public class LongestPalindromeTest {
     public void testOnePalindrome(){
         Assert.assertEquals("bab", optimal.longestPalindrome("abab"));
         Assert.assertEquals("babab", optimal.longestPalindrome("babab"));
+        Assert.assertEquals("t", optimal.longestPalindrome("tenhuonetu"));
         Assert.assertEquals("bab", optimal.longestPalindrome("aoeuoentababotenhuonetu"));
         Assert.assertEquals("b", optimal.longestPalindrome("b"));
         Assert.assertEquals("bbbbb", optimal.longestPalindrome("bbbbb"));
+        Assert.assertEquals("bb", optimal.longestPalindrome("cbbd"));
     }
 
     @Test

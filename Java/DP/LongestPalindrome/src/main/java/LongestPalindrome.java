@@ -56,7 +56,7 @@ public class LongestPalindrome {
                 // -1 for the next array having one less block than the previous
                 // -1 for looking for the square one above the current one
                 if(j-2 >= 0) between = front.get(j-2);
-                if(s.charAt(end) == s.charAt(i) && between > 0){
+                if(s.charAt(end) == s.charAt(i) && between >= 0){
                     int val = between + 2;
                     if(val > max){
                         max = val;
@@ -66,10 +66,10 @@ public class LongestPalindrome {
                     col.set(j, val);
                     continue;
                 }
-
                 col.set(j, -1);
             }
         }
+
         return answer;
     }
 }
