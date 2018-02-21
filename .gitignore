@@ -1,23 +1,10 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-
-/dataStructures/RedBlackTree/RedBlackTree/Debug
-/dataStructures/RedBlackTree/RedBlackTree/Release
-/dataStructures/RedBlackTree/Release
-/LongestPalindrome/LongestPalindrome/Debug
-/LongestPalindrome/Debug
-/LongestPalindrome/.vs/LongestPalindrome/v15
-/.vs
-/dataStructures/BinarySearchTree/.vs/BinarySearchTree/v15
-/dataStructures/BinarySearchTree/BinarySearchTree/Debug
-/dataStructures/BinarySearchTree/Debug
-/dataStructures/RedBlackTree/.vs/RedBlackTree/v15
-/dataStructures/RedBlackTree/TestSuite/Release
-/LongestPalindrome/LongestPalindrome/Release
-/LongestPalindrome/Release
-/longestSubstringNoRepeat/.vs/longestSubstringNoRepeat/v15
-/longestSubstringNoRepeat/Debug
 **/.idea
 **/target
 **/*.iml
+**/Debug
+**/Release
+**/.vs
+**/*.vcxproj*
