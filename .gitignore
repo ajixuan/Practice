@@ -8,3 +8,6 @@
 **/Release
 **/.vs
 **/*.vcxproj*
+**/*.classpath
+**/*.settings
+**/*.project
