@@ -16,9 +16,26 @@ public class Bucket<E> {
         public Item next;
     }
 
-    public Bucket(int size) {
+    public Bucket(int size, Bucket prev) {
+        //Item
         this.head = null;
-        next = null;
+        this.tail = null;
+
+        //Bucket
+        this.next = null;
+        this.prev = prev;
+        this.size = 0;
+        max = size;
+    }
+
+    public Bucket(int size) {
+        //Item
+        this.head = null;
+        this.tail = null;
+
+        //Bucket
+        this.next = null;
+        this.prev = null;
         this.size = 0;
         max = size;
     }
@@ -83,15 +100,26 @@ public class Bucket<E> {
 
     private void checkBucketStatus(){
         //If overflow, remove the last element
-        if (this.size > max) {
-            Item extra = _remove(this.max - 1);
-            if (this.next == null) this.next = new Bucket(max);
+        if (this.size > this.max) {
+            Item extra = _remove(this.max);
+            if (this.next == null) this.next = new Bucket(max, this);
             this.next.insert(0, (E) extra.item);
+            this.size--;
         }
     }
 
     private Item _get(int index){
         Item curr = this.head;
+
+        if(index > this.size){
+            if(index >= this.max){
+                return this.next._get(index - this.max);
+            }
+
+            String err = "Index: " + index + " too large for current size: " + this.size;
+            throw new IndexOutOfBoundsException(err);
+        }
+
         while (index > 0) {
             curr = curr.next;
             index--;
@@ -103,20 +131,29 @@ public class Bucket<E> {
     private Item _remove(int i){
         Item curr = this.head;
         Item remove;
-        if(i > this.size - 1){
-            return null;
+        if(i >= this.size){
+            String err = "Index: " + i + " too large for current size: " + this.size;
+            throw new IndexOutOfBoundsException(err);
         }
 
-        while (i > 0) {
+        this.size--;
+
+        if(i == 0){
+            remove = this.head;
+            this.head = this.head.next;
+            return remove;
+        }
+
+
+        while (i > 1) {
             curr = curr.next;
             i--;
         }
 
         remove = curr.next;
-        curr.next = curr.next.next;
-        this.size--;
+        curr.next = (curr.next != null) ? curr.next.next : null;
         checkBucketStatus();
-        return curr;
+        return remove;
     }
 
 }
