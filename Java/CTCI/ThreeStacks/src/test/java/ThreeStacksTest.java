@@ -3,6 +3,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.EmptyStackException;
 
 public class ThreeStacksTest {
     private ThreeStacks stacks;
@@ -52,19 +53,19 @@ public class ThreeStacksTest {
         stacks.push(1,1);
 
         Assert.assertEquals(0, heads[0]);
-        Assert.assertEquals(1, tails[0]);
+        Assert.assertEquals(0, tails[0]);
 
         Assert.assertEquals(5, heads[1]);
-        Assert.assertEquals(6, tails[1]);
+        Assert.assertEquals(5, tails[1]);
 
         stacks.push(0, 1);
         stacks.push(1,2);
 
         Assert.assertEquals(0, heads[0]);
-        Assert.assertEquals(2, tails[0]);
+        Assert.assertEquals(1, tails[0]);
 
         Assert.assertEquals(5, heads[1]);
-        Assert.assertEquals(7, tails[1]);
+        Assert.assertEquals(6, tails[1]);
     }
 
 
@@ -81,23 +82,47 @@ public class ThreeStacksTest {
         temp.setAccessible(true);
         int[] tails = (int[]) temp.get(stacks);
 
+        Assert.assertEquals(0, heads[0]);
+        Assert.assertEquals(0, tails[0]);
+        Assert.assertEquals(2, heads[1]);
         Assert.assertEquals(2, tails[1]);
         stacks.push(1, 0);
-        Assert.assertEquals(3, tails[1]);
         stacks.push(1, 1);
         stacks.push(1, 2);
-        Assert.assertEquals(5, tails[1]);
+        Assert.assertEquals(4, tails[1]);
+        Assert.assertEquals(0, heads[0]);
+
+        //Shuffle should occur here
         stacks.push(1, 3);
-        Assert.assertEquals(6, tails[1]);
+        Assert.assertEquals(5, tails[1]);
         Assert.assertEquals(1, heads[0]);
     }
 
-
-    @Test
-    public void teastBasicPop(){
-
-
+    @Test(expected = StackOverflowError.class)
+    public void testFullStack(){
+        stacks = new ThreeStacks<Integer>(1, 1);
+        stacks.push(0,1);
+        stacks.push(0,2);
     }
+
+
+    @Test(expected = EmptyStackException.class)
+    public void testBasicPop(){
+        stacks = new ThreeStacks<Integer>(5, 2);
+        stacks.push(0,1);
+        stacks.push(0,2);
+        stacks.push(0,3);
+        stacks.push(1,4);
+        stacks.push(1,5);
+        Assert.assertEquals(3, stacks.pop(0));
+        Assert.assertEquals(2, stacks.pop(0));
+        Assert.assertEquals(1, stacks.pop(0));
+        Assert.assertEquals(5, stacks.pop(1));
+        Assert.assertEquals(4, stacks.pop(1));
+        stacks.pop(0);
+    }
+
+
 
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalConstruction(){

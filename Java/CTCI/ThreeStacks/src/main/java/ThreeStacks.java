@@ -1,29 +1,33 @@
+import java.util.EmptyStackException;
+
 public class ThreeStacks <E>{
     private Object[] array;
     private int[] heads;
     private int[] tails;
     private int stacks;
-    public int test;
 
     public ThreeStacks(int len, int stacks) {
         if(len <= 0 || stacks <= 0)
             throw new IllegalArgumentException("Length or number of stacks must be greater than 0");
         this.array = new Object[len];
-        this.heads = new int[stacks];
-        this.tails = new int[stacks];
+        heads = new int[stacks];
+        tails = new int[stacks];
         this.stacks = stacks;
 
         //Initialize each stack position
         int div = len / stacks;
         for(int i = 0; i < this.stacks; i++){
-            this.heads[i] = div * i;
-            this.tails[i] = div * i;
+            heads[i] = div * i;
+            tails[i] = div * i;
         }
     }
 
-    public E pop(int stack, E obj){
-
-        return null;
+    public E pop(int stack){
+        E val = (E) this.array[_tail(stack)];
+        this.array[_tail(stack)] = null;
+        if(val == null) throw new EmptyStackException();
+        if(tails[stack] != heads[stack]) tails[stack]--;
+        return val;
     }
 
     public void push(int stack, E obj){
@@ -32,15 +36,20 @@ public class ThreeStacks <E>{
             throw new IndexOutOfBoundsException(err);
         }
 
+        if(isEmpty(stack)) {
+            this.array[tails[stack]] = obj;
+            return;
+        }
+
         int nextStack = (stack + 1) % this.stacks;
-        if(_getTail(stack) == heads[nextStack])
+        if((_tail(stack) + 1) % this.array.length == _head(nextStack))
             shuffle(nextStack, 0);
-        this.array[(_getTail(stack)+1) % this.array.length] = obj;
+        this.array[(_tail(stack) + 1) % this.array.length] = obj;
         tails[stack]++;
     }
 
     public boolean isEmpty(int stack){
-        if(heads[stack] == tails[stack] && array[tails[stack]] == null){
+        if(array[tails[stack]] == null){
             return true;
         }
         return false;
@@ -48,13 +57,23 @@ public class ThreeStacks <E>{
 
 
     /**
-     * _getTail
+     * _tail
      *  Method for getting the tail of stacks
      *  This method treats the array as circular
      * @return
      */
-    private int _getTail(int stack){
-        return this.tails[stack] % this.array.length;
+    private int _tail(int stack){
+        return tails[stack] % this.array.length;
+    }
+
+    /**
+     * _head
+     *  Method for getting the head of stacks
+     *  This method treats the array as circular
+     * @return
+     */
+    private int _head(int stack){
+        return heads[stack] % this.array.length;
     }
 
     /**
@@ -71,15 +90,16 @@ public class ThreeStacks <E>{
             throw new StackOverflowError("The stack is full");
         }
 
-        if(_getTail(stack) == this.heads[stack+1]){
-            this.shuffle(stack+1, level+1);
+        int nextStack = (stack + 1) % this.stacks;
+        if((_tail(stack) + 1) % this.array.length == _head(nextStack)){
+            this.shuffle(nextStack, level + 1);
         }
 
         //Shift all elements of stack
-        for(int i = this.tails[stack]; i >= this.heads[stack]; i--){
-            this.array[i + 1 % this.array.length] = this.array[i];
+        for(int i = tails[stack]; i >= heads[stack]; i--){
+            this.array[(i + 1) % this.array.length] = this.array[i % this.array.length];
         }
-        this.heads[stack]++;
-        this.tails[stack]++;
+        heads[stack]++;
+        tails[stack]++;
     }
 }
