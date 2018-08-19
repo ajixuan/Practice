@@ -123,6 +123,58 @@ public class ThreeStacksTest {
     }
 
 
+    @Test(expected = EmptyStackException.class)
+    public void testWrapPop(){
+        stacks = new ThreeStacks<Integer>(5, 2);
+        stacks.push(1,1);
+        stacks.push(1,2);
+        stacks.push(1,3);
+        stacks.push(1,4);
+        stacks.push(0,5);
+        Assert.assertEquals(4, stacks.pop(1));
+        Assert.assertEquals(3, stacks.pop(1));
+        Assert.assertEquals(2, stacks.pop(1));
+        Assert.assertEquals(1, stacks.pop(1));
+        Assert.assertEquals(5, stacks.pop(0));
+        stacks.pop(0);
+    }
+
+    @Test(expected = EmptyStackException.class)
+    public void testNumerousStacks(){
+        stacks = new ThreeStacks<Integer>(5, 5);
+        stacks.push(0,0);
+        stacks.push(1,1);
+        stacks.push(2,2);
+        stacks.push(3,3);
+        stacks.push(4,4);
+        Assert.assertEquals(0, stacks.pop(0));
+        Assert.assertEquals(1, stacks.pop(1));
+        Assert.assertEquals(2, stacks.pop(2));
+        Assert.assertEquals(3, stacks.pop(3));
+        Assert.assertEquals(4, stacks.pop(4));
+
+        stacks.push(0,0);
+        stacks.push(1,1);
+        stacks.push(2,2);
+        stacks.push(3,3);
+        stacks.push(4,4);
+        Assert.assertEquals(0, stacks.pop(0));
+        Assert.assertEquals(1, stacks.pop(1));
+        Assert.assertEquals(2, stacks.pop(2));
+        Assert.assertEquals(3, stacks.pop(3));
+        Assert.assertEquals(4, stacks.pop(4));
+
+        stacks.pop(0);
+
+    }
+
+    @Test(expected = StackOverflowError.class)
+    public void testNumerousStacksFull(){
+        stacks = new ThreeStacks<Integer>(5, 5);
+        stacks.push(0,0);
+        stacks.push(0,1);
+    }
+
 
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalConstruction(){
