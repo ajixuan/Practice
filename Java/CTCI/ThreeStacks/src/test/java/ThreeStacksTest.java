@@ -30,7 +30,7 @@ public class ThreeStacksTest {
      * @throws NoSuchFieldException
      */
     @Test
-    public void testPush() throws IllegalAccessException,  NoSuchFieldException{
+    public void testBasicPush() throws IllegalAccessException,  NoSuchFieldException{
         stacks = new ThreeStacks<Integer>(10, 2);
         Class stacksClass = stacks.getClass();
 
@@ -57,8 +57,47 @@ public class ThreeStacksTest {
         Assert.assertEquals(5, heads[1]);
         Assert.assertEquals(6, tails[1]);
 
+        stacks.push(0, 1);
+        stacks.push(1,2);
+
+        Assert.assertEquals(0, heads[0]);
+        Assert.assertEquals(2, tails[0]);
+
+        Assert.assertEquals(5, heads[1]);
+        Assert.assertEquals(7, tails[1]);
     }
 
+
+    @Test
+    public void testWrapPush() throws IllegalAccessException,  NoSuchFieldException{
+        stacks = new ThreeStacks<Integer>(5, 2);
+        Class stacksClass = stacks.getClass();
+
+        Field temp = stacksClass.getDeclaredField("heads");
+        temp.setAccessible(true);
+        int[] heads = (int[]) temp.get(stacks);
+
+        temp = stacksClass.getDeclaredField("tails");
+        temp.setAccessible(true);
+        int[] tails = (int[]) temp.get(stacks);
+
+        Assert.assertEquals(2, tails[1]);
+        stacks.push(1, 0);
+        Assert.assertEquals(3, tails[1]);
+        stacks.push(1, 1);
+        stacks.push(1, 2);
+        Assert.assertEquals(5, tails[1]);
+        stacks.push(1, 3);
+        Assert.assertEquals(6, tails[1]);
+        Assert.assertEquals(1, heads[0]);
+    }
+
+
+    @Test
+    public void teastBasicPop(){
+
+
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalConstruction(){

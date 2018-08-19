@@ -32,10 +32,10 @@ public class ThreeStacks <E>{
             throw new IndexOutOfBoundsException(err);
         }
 
-        int nextStack = (stack + 1) % this.heads.length;
+        int nextStack = (stack + 1) % this.stacks;
         if(_getTail(stack) == heads[nextStack])
-            shuffle(stack+1, 0);
-        this.array[tails[stack]+1] = obj;
+            shuffle(nextStack, 0);
+        this.array[(_getTail(stack)+1) % this.array.length] = obj;
         tails[stack]++;
     }
 
@@ -79,5 +79,7 @@ public class ThreeStacks <E>{
         for(int i = this.tails[stack]; i >= this.heads[stack]; i--){
             this.array[i + 1 % this.array.length] = this.array[i];
         }
+        this.heads[stack]++;
+        this.tails[stack]++;
     }
 }
