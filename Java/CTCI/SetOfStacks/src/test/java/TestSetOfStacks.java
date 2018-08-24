@@ -1,6 +1,8 @@
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.EmptyStackException;
+
 public class TestSetOfStacks {
     @Test
     public void testSetOfStack(){
@@ -26,6 +28,20 @@ public class TestSetOfStacks {
         Assert.assertEquals(3, set.pop());
         Assert.assertEquals(2, set.pop());
         Assert.assertEquals(1, set.pop());
+    }
+
+    @Test(expected = EmptyStackException.class)
+    public void testPopFrom(){
+        SetOfStacks set = new SetOfStacks<Integer>(1);
+        set.push(1);
+        set.push(2);
+        set.push(3);
+        set.push(4);
+        Assert.assertEquals(1, set.popFrom(3));
+        Assert.assertEquals(2, set.popFrom(2));
+        Assert.assertEquals(4, set.pop());
+        Assert.assertEquals(3, set.pop());
+        set.popFrom(1);
     }
 
 

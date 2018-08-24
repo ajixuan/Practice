@@ -32,4 +32,21 @@ public class SetOfStacks<E> {
        return (E) head.pop();
     }
 
+
+    public E popFrom(int stack){
+        MyStack curr = head;
+        while(stack > 0){
+            if(curr.next == null)
+                throw new IndexOutOfBoundsException("Stack at " + stack + " does not exist");
+            curr = curr.next;
+            stack--;
+        }
+
+        if(curr.size == 0){
+            throw new EmptyStackException();
+        }
+
+        return (E) curr.pop();
+    }
+
 }

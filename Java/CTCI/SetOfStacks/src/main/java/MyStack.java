@@ -1,3 +1,5 @@
+import java.util.EmptyStackException;
+
 public class MyStack<E> {
     public MyStack next;
     public Item head;
