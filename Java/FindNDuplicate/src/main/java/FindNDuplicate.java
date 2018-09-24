@@ -25,20 +25,21 @@ public class FindNDuplicate {
         //There is always one duplicate in every list
         dupes--;
         if(dupes <= 0) return;
-        int bound = (n > 2)? n - 2 : 1;
+        int bound = (n > 2)? n - 1 : 1;
         Set<Integer> taken = new HashSet<>();
         taken.add(this.list[n]);
-
         int index = r.nextInt(bound);
         int val = r.nextInt(bound);
         while (dupes > 0) {
-            while (taken.contains(index) || taken.contains(val)) {
+            while(taken.contains(index)){
                 index = r.nextInt(bound);
+            }
+
+            while (taken.contains(val) || index == val) {
                 val = r.nextInt(bound);
             }
-//            index = (index % 2 == 1) ? index + 1 : index;
+
             this.list[index] = val;
-//            this.list[index + 1] = randoms[dupes - 1];
             taken.add(index);
             taken.add(val);
             dupes--;

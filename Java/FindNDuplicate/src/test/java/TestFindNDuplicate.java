@@ -43,5 +43,9 @@ public class TestFindNDuplicate {
         nlist.printList();
         sol = nlist.findDupesByNegatives();
         Assert.assertEquals(5, sol.size());
+
+        nlist = new FindNDuplicate(20, 10);
+        nlist.printList();
+        Assert.assertEquals(10, sol.size());
     }
 }
