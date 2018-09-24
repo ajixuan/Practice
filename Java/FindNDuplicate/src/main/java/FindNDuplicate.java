@@ -71,13 +71,42 @@ public class FindNDuplicate {
     /**
      * findDupes()
      * Finds all the duplicates in the list and returns them
+     * The negative method uses the negative value to indicate that the current index have once
+     * been checked, which implies that previously another element had the same value. So when a
+     * negative number is encountered, it implies that the value that lead to this index is duplicate.
+     *
+     * Algorithm:
+     *   - Iterate through list
+     *   - Use the element's value as index, recursively set the element at that index to negative
+     *   - Stop when negative number is found or when the elements points back to current index
+     *   - If negative number is found then append current number to solution
      *
      * @return A list of duplicates
      */
-    public List findDupes() {
-        //Divide and conquer
-        System.out.println(list.toString());
-        return null;
+    public HashSet<Integer> findDupesByNegatives() {
+        //Set values to negative to indicate duplicate
+        HashSet<Integer> sol = new HashSet<>();
+        int check;
+        for(int i = 0; i < this.list.length; i++){
+            check = this.list[i];
+
+
+            //Prevet loops
+            while(check != i){
+                if(check < 0){
+                    sol.add(check);
+                    break;
+                }
+                this.list[check] = -1 - this.list[check];
+                check = this.list[check];
+            }
+        }
+
+        //Restore the list
+        for(int i = 0 ; i < this.list.length; i++){
+            this.list[i] = Math.abs(this.list[i]) - 1;
+        }
+        return sol;
 
     }
 

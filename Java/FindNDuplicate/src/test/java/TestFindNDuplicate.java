@@ -16,13 +16,18 @@ public class TestFindNDuplicate {
         Assert.assertEquals(1, nlist.getList()[1]);
         Assert.assertEquals(3, nlist.getList().length);
 
+        //Test max duplicates
         nlist = new FindNDuplicate(10, 5);
         nlist.printList();
         Assert.assertEquals(11, nlist.getList().length);
+
+        nlist = new FindNDuplicate(20, 5);
+        nlist.printList();
+        Assert.assertEquals(21, nlist.getList().length);
     }
 
     @Test
-    public void testFindDupe(){
+    public void testFindDupeByNegatives(){
 
     }
 }
