@@ -87,25 +87,29 @@ public class FindNDuplicate {
         //Set values to negative to indicate duplicate
         HashSet<Integer> sol = new HashSet<>();
         int check;
+
         for(int i = 0; i < this.list.length; i++){
             check = this.list[i];
 
-
-            //Prevet loops
-            while(check != i){
-                if(check < 0){
-                    sol.add(check);
-                    break;
-                }
-                this.list[check] = -1 - this.list[check];
-                check = this.list[check];
+            //First check cannot be negative
+            if(check < 0) {
+                check = Math.abs(check) - 1;
             }
+
+            if(this.list[check] < 0){
+                sol.add(check);
+                continue;
+            }
+
+            this.list[check] = -1 - this.list[check];
         }
 
         //Restore the list
         for(int i = 0 ; i < this.list.length; i++){
             this.list[i] = Math.abs(this.list[i]) - 1;
         }
+
+        System.out.println(sol.toString());
         return sol;
 
     }
