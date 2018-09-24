@@ -7,36 +7,41 @@ public class FindNDuplicate {
 
     /**
      * FindNDuplicate
-     * adding extra duplicates results in 1 + moreDupes number of duplicates
+     * adding extra duplicates results in 1 + dupes number of duplicates
      *
      * @param n
-     * @param moreDupes
+     * @param dupes
      */
-    public FindNDuplicate(int n, int moreDupes) {
-        if (moreDupes < 0) {
+    public FindNDuplicate(int n, int dupes){
+        if (dupes < 0) {
             throw new RuntimeException("Duplicates must be >= 0");
-        } else if (moreDupes > n / 2) {
+        } else if (dupes > n / 2) {
             throw new RuntimeException("Duplicates cannot be > n/2");
         }
 
         this.list = FindNDuplicate.makeList(n);
         Random r = new Random();
 
+        //There is always one duplicate in every list
+        dupes--;
+        if(dupes <= 0) return;
         int bound = (n > 2)? n - 2 : 1;
-
-        int[] randoms = r.ints(0, n).distinct().limit(moreDupes).sorted().toArray();
-        Set<Integer> taken = new HashSet<Integer>();
+        Set<Integer> taken = new HashSet<>();
+        taken.add(this.list[n]);
 
         int index = r.nextInt(bound);
-        while (moreDupes > 0) {
-            while (taken.contains(index)) {
+        int val = r.nextInt(bound);
+        while (dupes > 0) {
+            while (taken.contains(index) || taken.contains(val)) {
                 index = r.nextInt(bound);
+                val = r.nextInt(bound);
             }
-            index = (index % 2 == 1) ? index + 1 : index;
-            this.list[index] = randoms[moreDupes - 1];
-            this.list[index + 1] = randoms[moreDupes - 1];
-            moreDupes--;
+//            index = (index % 2 == 1) ? index + 1 : index;
+            this.list[index] = val;
+//            this.list[index + 1] = randoms[dupes - 1];
             taken.add(index);
+            taken.add(val);
+            dupes--;
         }
 
     }
