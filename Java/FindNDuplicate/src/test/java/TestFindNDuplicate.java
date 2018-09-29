@@ -31,6 +31,7 @@ public class TestFindNDuplicate {
     @Test
     public void testFindDupeByNegatives(){
         FindNDuplicate nlist = new FindNDuplicate(1, 0);
+        nlist.printList();
         HashSet<Integer> sol = nlist.findDupesByNegatives();
         Assert.assertEquals(1, sol.size());
 
@@ -39,6 +40,16 @@ public class TestFindNDuplicate {
         sol = nlist.findDupesByNegatives();
         Assert.assertEquals(2, sol.size());
 
+        nlist = new FindNDuplicate(10, 5);
+        nlist.printList();
+        sol = nlist.findDupesByNegatives();
+        Assert.assertEquals(5, sol.size());
+
+        nlist = new FindNDuplicate(12, 6);
+        nlist.printList();
+        sol = nlist.findDupesByNegatives();
+        Assert.assertEquals(6, sol.size());
+
         nlist = new FindNDuplicate(20, 5);
         nlist.printList();
         sol = nlist.findDupesByNegatives();
@@ -46,6 +57,7 @@ public class TestFindNDuplicate {
 
         nlist = new FindNDuplicate(20, 10);
         nlist.printList();
+        sol = nlist.findDupesByNegatives();
         Assert.assertEquals(10, sol.size());
     }
 }
